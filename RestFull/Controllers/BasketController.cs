@@ -35,21 +35,21 @@ namespace RestFull.Controllers
         [HttpPost]
         public ActionResult AddItemToBasket(int productId, int quantity)
         {
-            //var basket = await RetrieveBasket(GetBuyerId());
+            var basket = await RetrieveBasket(GetBuyerId());
 
-            //if (basket == null) basket = CreateBasket();
+            if (basket == null) basket = CreateBasket();
 
-            //var product = await _context.Products.FindAsync(productId);
+            var product = await _context.Products.FindAsync(productId);
 
-            //if (product == null) return BadRequest(new ProblemDetails { Title = "Product not found" });
+            if (product == null) return NotFound(); //BadRequest(new ProblemDetails { Title = "Product not found" });
 
-            //basket.AddItem(product, quantity);
+            basket.AddItem(product, quantity);
 
-            //var result = await _context.SaveChangesAsync() > 0;
+            var result = await _context.SaveChangesAsync() > 0;
 
-            //if (result) return CreatedAtRoute("GetBasket", basket.MapBasketToDto());
+            if (result) return StatusCode(201); //return CreatedAtRoute("GetBasket", basket.MapBasketToDto());
 
-            return StatusCode(201);//BadRequest(new ProblemDetails { Title = "Problem saving item to basket" });
+            //BadRequest(new ProblemDetails { Title = "Problem saving item to basket" });
         }
 
         [HttpDelete]
